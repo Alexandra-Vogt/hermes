@@ -63,13 +63,13 @@ def twilio(msg, target, token=None):
         number, account_sid, auth_token = token.split(':')
 
     client = Client(account_sid, auth_token)
-    client.messagescreate(body=msg, from_=number, to=target)
+    client.messages.create(body=msg, from_=number, to=target)
 
 
 def main():
     parser = argparse.ArgumentParser(prog = "hermes",
                                      description="Send a message on a platform.")
-    parser.version = "1.0"
+    parser.version = "0"
 
     parser.add_argument("-v",
                         "--version",

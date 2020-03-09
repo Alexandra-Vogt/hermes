@@ -4,8 +4,8 @@ for updating you on the status on long running processes.
 
 Functions:
 
-discord(msg, target, ) --
-twillo(msg, target, )  --
+discord(msg, target, token=None) -- Sends a message using a discord bot.
+twilo(msg, target, token=None)  -- Sends a message using a twilio sms.
 """
 
 import json
@@ -42,7 +42,7 @@ def discord(msg, target, token=None):
 
 
 def twilio(msg, target, token=None):
-    """Sends a message using a discord bot.
+    """Sends a message using twilio sms.
 
     :param msg: The message to be sent.
     :param target: The username and number.
@@ -69,7 +69,7 @@ def twilio(msg, target, token=None):
 def main():
     parser = argparse.ArgumentParser(prog = "hermes",
                                      description="Send a message on a platform.")
-    parser.version = "0"
+    parser.version = "0.0.1"
 
     parser.add_argument("-v",
                         "--version",
@@ -104,5 +104,6 @@ def main():
         discord(args.msg, args.target, token=args.t__token)
     if args.method == "twilio" or args.method == "t":
         twilio(args.msg, args.target, token=args.t__token)
+
 
 main()

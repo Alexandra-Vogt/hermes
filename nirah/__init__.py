@@ -12,6 +12,7 @@ import json
 import argparse
 import discord as d
 from twilio.rest import Client
+from twilio.base.exceptions import TwilioRestException
 from pathlib import Path
 
 SETTINGS_FILE = str(Path.home()) + "/.config/hermes/settings.json"
@@ -38,6 +39,7 @@ def discord(msg, target, token=None):
             await client.close()
         except AttributeError:
             await client.close()
+            raise ValueError("invalid discord token provided")
     client.run(token)
 
 
@@ -62,12 +64,15 @@ def twilio(msg, target, token=None):
     else:
         number, account_sid, auth_token = token.split(':')
 
-    client = Client(account_sid, auth_token)
-    client.messages.create(body=msg, from_=number, to=target)
+    try:
+        client = Client(account_sid, auth_token)
+        client.messages.create(body=msg, from_=number, to=target)
+    except TwilioRestException:
+        raise ValueError("invalid twilio sid, auth token, or number")
 
 
 def main():
-    parser = argparse.ArgumentParser(prog = "hermes",
+    parser = argparse.ArgumentParser(prog = "arke",
                                      description="Send a message on a platform.")
     parser.version = "0.0.1"
 
@@ -94,16 +99,19 @@ def main():
     parser.add_argument("-t"
                         "--token",
                         action="store",
-                        metavar="api token",
+                        metavar="auth_token",
                         type=str,
                         help="the api token for the method")
 
     args = parser.parse_args()
 
-    if args.method == "discord" or args.method == "d":
-        discord(args.msg, args.target, token=args.t__token)
-    if args.method == "twilio" or args.method == "t":
-        twilio(args.msg, args.target, token=args.t__token)
+    try:
+        if args.method == "discord" or args.method == "d":
+            discord(args.msg, args.target, token=args.t__token)
+        if args.method == "twilio" or args.method == "t":
+            twilio(args.msg, args.target, token=args.t__token)
+    except ValueError as err:
+        print("error: ", err)
 
-
-main()
+if __name__== "__main__":
+    main()

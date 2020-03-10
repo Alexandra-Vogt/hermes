@@ -17,6 +17,7 @@ from pathlib import Path
 
 SETTINGS_FILE = str(Path.home()) + "/.config/hermes/settings.json"
 
+
 def discord(msg, target, token=None):
     """Sends a message using a discord bot.
 
@@ -72,7 +73,7 @@ def twilio(msg, target, token=None):
 
 
 def main():
-    parser = argparse.ArgumentParser(prog = "arke",
+    parser = argparse.ArgumentParser(prog="arke",
                                      description="Send a message on a platform.")
     parser.version = "0.0.1"
 
@@ -80,7 +81,7 @@ def main():
                         "--version",
                         action="version",
                         help="displays version info")
-    
+
     parser.add_argument("method",
                         metavar="method",
                         type=str,
@@ -113,5 +114,6 @@ def main():
     except ValueError as err:
         print("error: ", err)
 
-if __name__== "__main__":
+
+if __name__ == "__main__":
     main()

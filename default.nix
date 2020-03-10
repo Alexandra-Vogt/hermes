@@ -1,16 +1,15 @@
-# This imports the nix package collection,
-# so we can access the `pkgs` and `stdenv` variables
 with import <nixpkgs> {};
 
-# Make a new "derivation" that represents our shell
 stdenv.mkDerivation {
-    name = "ninshubur-enviroment";
+    name = "nirah-enviroment";
   
-    # The packages in the `buildInputs` list will be added to the PATH in our shell
     buildInputs = with pkgs; [
+      # For testing the package
       python3Packages.discordpy
       python3Packages.twilio
       python3Packages.pip
+
+      # For building the package
       python3Packages.setuptools
       python3Packages.wheel
       python3Packages.twine
